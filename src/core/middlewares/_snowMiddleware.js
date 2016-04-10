@@ -5,13 +5,13 @@ export default class SnowMiddleware {
     }
     //设置下一级责任链
     nextInvoke(middleware) {
-        if (this.next) {
-            this.next.nextInvoke(middleware);
-        } else {
+        if (this.next === null) {
             this.next = middleware;
+        } else {
+            this.next.nextInvoke(middleware);
         }
     }
     invoke(context) {
-      return this.next.invoke(context);
+        return this.next.invoke(context);
     }
 }

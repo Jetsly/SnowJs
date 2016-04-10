@@ -13,7 +13,7 @@ export default class CoreSnow {
         server.listen(port);
     }
     use(middleware) {
-        if (this.middleware == null) {
+        if (this.middleware === null) {
             this.middleware = middleware;
         } else {
             this.middleware.nextInvoke(middleware);
