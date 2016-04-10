@@ -12,6 +12,6 @@ export default class SnowMiddleware {
         }
     }
     invoke(context) {
-      return next.invoke(context);
+      return this.next.invoke(context);
     }
 }

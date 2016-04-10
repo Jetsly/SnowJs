@@ -16,6 +16,7 @@ const apiWare = new APIMiddleware({
 
 });
 
-new CoreSnow(staticWare)
-    .use(mvcWare)
-    .listen(8090);
+const snowjs = new CoreSnow();
+snowjs.use(staticWare);
+snowjs.use(mvcWare)
+snowjs.listen(8090);

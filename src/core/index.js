@@ -4,20 +4,20 @@ import { server } from './httpUtil'
  * 核心的定义
  */
 export default class CoreSnow {
-    constructor(middleware) {
-        this.middleware = middleware;
-    }
     listen(port) {
-       server.on('request',(req, res)=>{     
-           this.middleware.invoke({
-               req,res
-           });
-       })
-       server.listen(port);
+        server.on('request', (req, res) => {
+            this.middleware.invoke({
+                req, res
+            });
+        })
+        server.listen(port);
     }
     use(middleware) {
-        this.middleware.nextInvoke(middleware);
-        return this;
+        if (this.middleware == null) {
+            this.middleware = middleware;
+        } else {
+            this.middleware.nextInvoke(middleware);
+        }
     }
 }
 
