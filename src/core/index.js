@@ -4,6 +4,9 @@ import { server } from './httpUtil'
  * 核心的定义
  */
 export default class CoreSnow {
+    constructor(){
+        this.middleware = null;
+    }
     listen(port) {
         server.on('request', (req, res) => {
             this.middleware.invoke({

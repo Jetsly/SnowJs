@@ -1,9 +1,8 @@
 
-export default class SnowMiddleware {
-    constructor(next) {
-        this.next = next;
+export default class SnowMiddleware {    
+    constructor(){
+        this.next=null;
     }
-    //设置下一级责任链
     nextInvoke(middleware) {
         if (this.next === null) {
             this.next = middleware;
@@ -12,6 +11,9 @@ export default class SnowMiddleware {
         }
     }
     invoke(context) {
+        if (this.next === null) {
+            return context;
+        }
         return this.next.invoke(context);
     }
 }
