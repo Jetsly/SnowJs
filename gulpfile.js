@@ -13,12 +13,6 @@ gulp.task('clean',()=>{
 gulp.task("build",['clean'],() => {
     return gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
-        // .pipe(babel({
-        //     presets: ['es2015'],
-        //     plugins: ['babel-plugin-transform-decorators-legacy'],
-        //     sourceMaps: "inline",
-        //     sourceRoot: __dirname
-        // }))
         .pipe(babel())
         .pipe(sourcemaps.write({includeContent: false, sourceRoot: `${__dirname}/src`}))
         .pipe(gulp.dest("public"));
