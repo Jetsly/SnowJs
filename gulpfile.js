@@ -3,8 +3,6 @@ const sourcemaps = require('gulp-sourcemaps');
 const clean = require('gulp-clean');
 const babel = require("gulp-babel");
 
-console.log(__dirname)
-
 gulp.task('clean',()=>{
    return gulp.src('public', {read: false})
     .pipe(clean());

@@ -1,4 +1,21 @@
 
-import  CoreSnow  from './core';
+import {
+    default as CoreSnow,
+    StaticMiddleware,
+    MVCMiddleware,
+    APIMiddleware
+} from './core';
 
-CoreSnow.listen(8090);
+const staticWare = new StaticMiddleware({
+
+});
+const mvcWare = new MVCMiddleware({
+
+});
+const apiWare = new APIMiddleware({
+
+});
+
+new CoreSnow(staticWare)
+    .use(mvcWare)
+    .listen(8090);
