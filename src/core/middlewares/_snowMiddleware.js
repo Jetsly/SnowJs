@@ -1,7 +1,7 @@
 
-export default class SnowMiddleware {    
-    constructor(){
-        this.next=null;
+export default class SnowMiddleware {
+    constructor() {
+        this.next = null;
     }
     nextInvoke(middleware) {
         if (this.next === null) {
@@ -11,7 +11,8 @@ export default class SnowMiddleware {
         }
     }
     invoke(context) {
-        if (this.next === null) {
+        let {req, res} = context;
+        if (this.next === null || res.finished) {
             return context;
         }
         return this.next.invoke(context);

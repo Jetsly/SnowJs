@@ -6,16 +6,15 @@ import {
     APIMiddleware
 } from './core';
 
-const mvcWare = new MVCMiddleware({
-
-});
 const apiWare = new APIMiddleware({
 
 });
 
 const snowjs = new CoreSnow();
 snowjs.use(new StaticMiddleware({
-  
+  "/assets":"/assets"
 }));
-snowjs.use(mvcWare)
+snowjs.use(new MVCMiddleware({
+   
+}))
 snowjs.listen(8090);

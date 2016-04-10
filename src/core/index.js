@@ -4,16 +4,8 @@ import { server } from './httpUtil'
  * 核心的定义
  */
 export default class CoreSnow {
-    constructor(){
+    constructor() {
         this.middleware = null;
-    }
-    listen(port) {
-        server.on('request', (req, res) => {
-            this.middleware.invoke({
-                req, res
-            });
-        })
-        server.listen(port);
     }
     use(middleware) {
         if (this.middleware === null) {
@@ -21,6 +13,18 @@ export default class CoreSnow {
         } else {
             this.middleware.nextInvoke(middleware);
         }
+    }
+    listen(port) {
+        server.on('request', (req, res) => {
+            let {req: _req, res: _res} = this.middleware.invoke({
+                req, res
+            });
+            if (!_res.finished) {
+                _res.statusCode = 404;
+                _res.end();
+            }
+        })
+        server.listen(port);
     }
 }
 
