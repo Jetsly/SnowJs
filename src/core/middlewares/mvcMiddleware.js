@@ -21,15 +21,7 @@ export default class MVCMiddleware extends SnowMiddleware {
                 this.inject(controller.default);
             }
         }
-    }    
-    invoke(context) {
-        let {req, res} = context;
-        const reqUrl= parse(req.url);
-        if(this.actionMap.hasOwnProperty(reqUrl.pathname)) {
-            return this.actionResult(this.actionMap[reqUrl.pathname](req, res),res);
-        }
-        super.invoke(context);
-    }
+    }   
     inject(controller){
         const actions= Object.getOwnPropertyNames(controller.prototype);
         actions.forEach(action=>{
@@ -39,6 +31,14 @@ export default class MVCMiddleware extends SnowMiddleware {
                this.actionMap[actionPath]=actionMethod;
            }
         });        
+    } 
+    invoke(context) {
+        let {req, res} = context;
+        const reqUrl= parse(req.url);
+        if(this.actionMap.hasOwnProperty(reqUrl.pathname)) {
+            return this.actionResult(this.actionMap[reqUrl.pathname](req, res),res);
+        }
+        super.invoke(context);
     }
     actionResult(body,res){
         res.writeHead(200, {
