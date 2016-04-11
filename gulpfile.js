@@ -8,12 +8,12 @@ gulp.task('clean',()=>{
     .pipe(clean());
 });
 
-gulp.task('static',()=>{
-   return gulp.src('src/content')
+gulp.task('static',['clean'],()=>{
+   return gulp.src('src/content/**/*.*')
     .pipe(gulp.dest("public/assets"));
 });
 
-gulp.task("build",['clean'],() => {
+gulp.task("build",['static'],() => {
     return gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
         .pipe(babel())

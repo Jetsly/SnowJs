@@ -12,9 +12,8 @@ export default class SnowMiddleware {
     }
     invoke(context) {
         let {req, res} = context;
-        if (this.next === null || res.finished) {
-            return context;
+        if (this.next !== null && !res.finished) {
+            this.next.invoke(context);
         }
-        return this.next.invoke(context);
     }
 }

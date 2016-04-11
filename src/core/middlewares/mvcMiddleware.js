@@ -13,6 +13,6 @@ export default class MVCMiddleware extends SnowMiddleware {
         // res.setHeader('X-Foo', 'bar');
         // res.writeHead(200, { 'Content-Type': 'text/plain' });
         // res.end('ok');
-        return super.invoke(context);
+        super.invoke(context);
     }
 }

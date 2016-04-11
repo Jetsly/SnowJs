@@ -12,7 +12,7 @@ const apiWare = new APIMiddleware({
 
 const snowjs = new CoreSnow();
 snowjs.use(new StaticMiddleware({
-  "/assets":"/assets"
+  "/assets":`${__dirname}/assets`
 }));
 snowjs.use(new MVCMiddleware({
    

@@ -24,5 +24,8 @@
     "gulp-clean": "^0.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "webpack": "^1.12.14"
+  },
+  "dependencies": {
+    "send": "^0.13.2"
   }
 }

@@ -7,6 +7,6 @@ export default class APIMiddleware extends SnowMiddleware {
     invoke(context) {
         let {req, res} = context;
 
-        return super.invoke(context);
+        super.invoke(context);
     }
 }

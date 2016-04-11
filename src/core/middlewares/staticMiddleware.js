@@ -1,5 +1,6 @@
-import url from 'url';
+import send from 'send';
 import SnowMiddleware from './_snowMiddleware';
+
 
 export default class StaticMiddleware extends SnowMiddleware {
     constructor(pathMap) {
@@ -10,10 +11,12 @@ export default class StaticMiddleware extends SnowMiddleware {
         let {req, res} = context;
         if (/^\/[^\/]*/.test(req.url)) {
             const reqPrefixUrl = /^\/[^\/]*/.exec(req.url)[0];
-            if(this.pathMap.hasOwnProperty(reqPrefixUrl)){
-                
+            if (this.pathMap.hasOwnProperty(reqPrefixUrl)) {
+                const fileUrl = req.url.replace(reqPrefixUrl, this.pathMap[reqPrefixUrl]);
+                send(req, fileUrl).pipe(res);
             }
+        } else {
+            super.invoke(context);
         }
-        return super.invoke(context);
     }
 }

@@ -16,13 +16,9 @@ export default class CoreSnow {
     }
     listen(port) {
         server.on('request', (req, res) => {
-            let {req: _req, res: _res} = this.middleware.invoke({
+            this.middleware.invoke({
                 req, res
             });
-            if (!_res.finished) {
-                _res.statusCode = 404;
-                _res.end();
-            }
         })
         server.listen(port);
     }
