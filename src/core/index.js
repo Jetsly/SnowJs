@@ -19,7 +19,6 @@ export default class CoreSnow {
             this.middleware.invoke({
                 req, res
             });
-            console.log(1);
         })
         server.listen(port);
     }

@@ -13,12 +13,9 @@ export default class StaticMiddleware extends SnowMiddleware {
             const reqPrefixUrl = /^\/[^\/]*/.exec(req.url)[0];
             if (this.pathMap.hasOwnProperty(reqPrefixUrl)) {
                 const fileUrl = req.url.replace(reqPrefixUrl, this.pathMap[reqPrefixUrl]);
-                send(req, fileUrl).pipe(res);
-            }else{
-               super.invoke(context);
+                return send(req, fileUrl).pipe(res);
             }
-        } else {
-            super.invoke(context);
         }
+        super.invoke(context);
     }
 }
