@@ -19,6 +19,7 @@ export default class CoreSnow {
             this.middleware.invoke({
                 req, res
             });
+            console.log(1);
         })
         server.listen(port);
     }
@@ -26,14 +27,14 @@ export default class CoreSnow {
 
 
 import RequestMapping from './decorators/requestMappingDecorator'
-import Controller from './decorators/restControllerDecorator'
+import RestController from './decorators/restControllerDecorator'
 
 import StaticMiddleware from './middlewares/staticMiddleware'
 import MVCMiddleware from './middlewares/mvcMiddleware'
 import APIMiddleware from './middlewares/apiMiddleware'
 
 export {
-Controller,
+RestController,
 RequestMapping,
 
 StaticMiddleware,

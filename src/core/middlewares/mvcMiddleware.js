@@ -1,18 +1,46 @@
+import { readdirSync } from 'fs';
+import { parse } from 'url';
+import path from 'path';
 import SnowMiddleware from './_snowMiddleware';
 
 import RequestMapping from '../decorators/requestMappingDecorator'
-import Controller from '../decorators/restControllerDecorator'
+import RestController from '../decorators/restControllerDecorator'
 
 export default class MVCMiddleware extends SnowMiddleware {
-    constructor(){
+    constructor(options) {0
         super();
-    }
+        this.actionMap = {};
+        var files = readdirSync(options.controllers);
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var ext = path.extname(file);
+            var base = path.basename(file, ext);
+
+            var controller = require(path.join(options.controllers, base));
+            if(controller.default.isController){
+                this.inject(controller.default);
+            }
+        }
+    }    
     invoke(context) {
         let {req, res} = context;
-        // res.setHeader('Content-Type', 'text/html');
-        // res.setHeader('X-Foo', 'bar');
-        // res.writeHead(200, { 'Content-Type': 'text/plain' });
-        // res.end('ok');
+        const reqUrl= parse(req.url);
+        if(this.actionMap.hasOwnProperty(reqUrl.pathname)) {
+            let result= this.actionMap[reqUrl.pathname]();
+            console.log(result);
+        }else{
+              
+        }
         super.invoke(context);
+    }
+    inject(controller){
+        const actions= Object.getOwnPropertyNames(controller.prototype);
+        actions.forEach(action=>{
+           if(action!=='constructor') {
+               let desc = Object.getOwnPropertyDescriptor(controller.prototype, action);
+               let [actionPath,actionMethod]= desc.value();
+               this.actionMap[actionPath]=actionMethod;
+           }
+        });        
     }
 }
