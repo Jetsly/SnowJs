@@ -23,12 +23,14 @@ export default class MVCMiddleware extends SnowMiddleware {
         }
     }   
     inject(controller){
+        let aa=new controller();
         const actions= Object.getOwnPropertyNames(controller.prototype);
         actions.forEach(action=>{
            if(action!=='constructor') {
-               let desc = Object.getOwnPropertyDescriptor(controller.prototype, action);
-               let [actionPath,actionMethod]= desc.value();
-               this.actionMap[actionPath]=actionMethod;
+               let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
+               if(method.value.isAction){
+                   this.actionMap[method.value.actionMap]=method.value;
+               }
            }
         });        
     } 

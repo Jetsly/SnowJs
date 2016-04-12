@@ -3,10 +3,8 @@
  */
 export default function RequestMapping(path) {
     return function(target, name, descriptor) {
-        let action = descriptor.value;
-        descriptor.value = function(params) {
-            return [path, action]
-        }
+        descriptor.value.isAction=true;
+        descriptor.value.actionMap=path;
         return descriptor;
-    }
+    };
 }
