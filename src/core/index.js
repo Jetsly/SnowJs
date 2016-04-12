@@ -15,6 +15,16 @@ export default class CoreSnow {
         }
     }
     listen(port) {
+        this.middleware.nextInvoke({
+            invoke: function(context) {
+                let {req, res} = context;
+                res.writeHead(404, {
+                    'Content-Type': 'text/plain',
+                    'Content-Length': 0,
+                });
+                res.end();
+            }
+        })
         server.on('request', (req, res) => {
             this.middleware.invoke({
                 req, res

@@ -11,8 +11,7 @@ export default class MVCMiddleware extends SnowMiddleware {
         super();
         this.actionMap = {};
         var files = readdirSync(options.controllers);
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
+        files.forEach(file=>{
             var ext = path.extname(file);
             var base = path.basename(file, ext);
 
@@ -20,18 +19,19 @@ export default class MVCMiddleware extends SnowMiddleware {
             if(controller.default.isController){
                 this.inject(controller.default);
             }
-        }
+        });
     }   
     inject(controller){
         let aa=new controller();
         const actions= Object.getOwnPropertyNames(controller.prototype);
         actions.forEach(action=>{
-           if(action!=='constructor') {
-               let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
-               if(method.value.isAction){
-                   this.actionMap[method.value.actionMap]=method.value;
-               }
+           if(action==='constructor'){
+               return;
            }
+           let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
+           if(method.value.isAction){
+               this.actionMap[method.value.actionMap]=method.value;
+           }          
         });        
     } 
     invoke(context) {
@@ -43,8 +43,13 @@ export default class MVCMiddleware extends SnowMiddleware {
         super.invoke(context);
     }
     actionResult(body,res){
+        let contentType='text/plain';
+        if(typeof body==='object'){
+            contentType='application/json';
+            body=JSON.stringify(body);
+        }
+        res.setHeader('Content-Type',contentType);
         res.writeHead(200, {
-            'Content-Type': 'text/plain',
             'Content-Length': body.length,
         });
         res.end(body);

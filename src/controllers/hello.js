@@ -11,4 +11,9 @@ export default class Hello {
     home(){
         return "Hello World!";
     }
+    
+    @RequestMapping("/test")
+    homeTest(){
+        return {a:'cc'};
+    }
 }
