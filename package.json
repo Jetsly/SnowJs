@@ -27,6 +27,7 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
+    "js-yaml": "^3.5.5",
     "pug": "^0.1.0",
     "send": "^0.13.2"
   }

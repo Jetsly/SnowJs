@@ -48,7 +48,7 @@ export default class MVCMiddleware extends SnowMiddleware {
     }
     actionResult(result, res) {
         let contentType = 'text/plain';
-        let body = '';
+        let body = result;
         if (typeof result === 'object') {
             contentType = 'application/json';
             body = JSON.stringify(result);

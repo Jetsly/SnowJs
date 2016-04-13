@@ -1,12 +1,12 @@
 
 import {
-RestController,
+Controller,
 RequestMapping,
 
-ViewResult
+View
 } from '../core';
 
-@RestController()
+@Controller()
 export default class Hello {
 
     @RequestMapping("/")
@@ -15,12 +15,12 @@ export default class Hello {
     }
 
     @RequestMapping("/test")
-    homeTest() {
+    test() {
         return { a: 'cc' };
     }
 
     @RequestMapping("/index")
-    homeTest() {
-        return ViewResult({ author: 'cc' },'index');
+    index() {
+        return View({ author: 'cc' },'index');
     }
 }

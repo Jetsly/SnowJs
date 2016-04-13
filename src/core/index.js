@@ -1,20 +1,25 @@
 import http from 'http';
 import { server } from './httpUtil'
+import { safeLoad } from 'js-yaml'
+import { readFileSync } from 'fs';
+import {resolve} from 'path';
 /**
  * 核心的定义
  */
 export default class CoreSnow {
     constructor() {
         this.middleware = null;
+        let _options = safeLoad(readFileSync(resolve(__dirname, '..', 'conf/app.yml')));
+        this.options = Object.assign({
+            application: {
+                port: 8080
+            }
+        }, _options);
     }
-    use(middleware) {
-        if (this.middleware === null) {
-            this.middleware = middleware;
-        } else {
-            this.middleware.nextInvoke(middleware);
-        }
+    static createServer() {
+        return new CoreSnow();
     }
-    listen(port) {
+    _init() {
         this.middleware.nextInvoke({
             invoke: function(context) {
                 let {req, res} = context;
@@ -30,27 +35,41 @@ export default class CoreSnow {
                 req, res
             });
         })
+    }
+    use(middleware) {
+        if (this.middleware === null) {
+            this.middleware = middleware;
+        } else {
+            this.middleware.nextInvoke(middleware);
+        }
+    }
+    listen(port) {
+        this._init();
         server.listen(port);
+    }
+    start() {
+        this._init();
+        server.listen(this.options.application.port);
     }
 }
 
 
 import RequestMapping from './decorators/requestMappingDecorator'
-import RestController from './decorators/restControllerDecorator'
+import Controller from './decorators/restControllerDecorator'
 
 import StaticMiddleware from './middlewares/staticMiddleware'
 import MVCMiddleware from './middlewares/mvcMiddleware'
 import APIMiddleware from './middlewares/apiMiddleware'
 
-import ViewResult from './actionResult/ViewResult'
+import View from './actionResult/ViewResult'
 
 export {
-RestController,
+Controller,
 RequestMapping,
 
 StaticMiddleware,
 MVCMiddleware,
 APIMiddleware,
 
-ViewResult
+View
 }

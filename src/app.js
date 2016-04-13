@@ -10,7 +10,7 @@ APIMiddleware
 
 // });
 
-const app = new CoreSnow();
+const app = CoreSnow.createServer();
 
 app.use(new StaticMiddleware({
     "/assets": `${__dirname}/assets`
@@ -20,4 +20,4 @@ app.use(new MVCMiddleware({
     controllers: `${__dirname}/controllers`,
     viewTpl: `${__dirname}/views`
 }))
-app.listen(8090);
+app.start();
