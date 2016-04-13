@@ -1,20 +1,23 @@
 
 import {
-    default as CoreSnow,
-    StaticMiddleware,
-    MVCMiddleware,
-    APIMiddleware
+default as CoreSnow,
+StaticMiddleware,
+MVCMiddleware,
+APIMiddleware
 } from './core';
 
 // const apiWare = new APIMiddleware({
 
 // });
 
-const snowjs = new CoreSnow();
-snowjs.use(new StaticMiddleware({
-  "/assets":`${__dirname}/assets`
+const app = new CoreSnow();
+
+app.use(new StaticMiddleware({
+    "/assets": `${__dirname}/assets`
 }));
-snowjs.use(new MVCMiddleware({
-   controllers:`${__dirname}/controllers`
+
+app.use(new MVCMiddleware({
+    controllers: `${__dirname}/controllers`,
+    viewTpl: `${__dirname}/views`
 }))
-snowjs.listen(8090);
+app.listen(8090);

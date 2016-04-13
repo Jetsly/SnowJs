@@ -13,7 +13,12 @@ gulp.task('static',['clean'],()=>{
     .pipe(gulp.dest("public/assets"));
 });
 
-gulp.task("build",['static'],() => {
+gulp.task('views',['static'],()=>{
+   return gulp.src('src/views/**/*.*')
+    .pipe(gulp.dest("public/views"));
+});
+
+gulp.task("build",['views'],() => {
     return gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
         .pipe(babel())

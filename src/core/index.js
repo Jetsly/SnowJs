@@ -42,11 +42,15 @@ import StaticMiddleware from './middlewares/staticMiddleware'
 import MVCMiddleware from './middlewares/mvcMiddleware'
 import APIMiddleware from './middlewares/apiMiddleware'
 
+import ViewResult from './actionResult/ViewResult'
+
 export {
 RestController,
 RequestMapping,
 
 StaticMiddleware,
 MVCMiddleware,
-APIMiddleware
+APIMiddleware,
+
+ViewResult
 }
