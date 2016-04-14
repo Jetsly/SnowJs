@@ -1,7 +1,7 @@
 import { parse } from 'url';
 import { compileFile } from 'pug';
 import {
-    requireDir
+requireDir
 } from '../_util';
 import SnowMiddleware from './_snowMiddleware';
 
@@ -15,7 +15,7 @@ export default class MVCMiddleware extends SnowMiddleware {
             engine: compileFile
         });
         this.actionMap = {};
-        requireDir(options.controllers).then(controller=>{
+        requireDir(options.controllers).then(controller=> {
             if (controller.default.isController) {
                 this.inject(controller.default);
             }
@@ -54,9 +54,18 @@ export default class MVCMiddleware extends SnowMiddleware {
             body = result(this.options);
         }
         res.setHeader('Content-Type', contentType);
-        res.writeHead(200, {
-            'Content-Length': body.length,
-        });
-        res.end(body);
+        if (body instanceof Promise) {
+            body.done((msg) => {
+                res.writeHead(200, {
+                    'Content-Length': msg.length,
+                });
+                res.end(msg);
+            });
+        } else {
+            res.writeHead(200, {
+                'Content-Length': body.length,
+            });
+            res.end(body);
+        }
     }
 }

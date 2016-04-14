@@ -15,10 +15,11 @@ export default class Admin {
     admin(req, res) {
         user.sync({ force: true }).then(function() {
             // Table created
-            return user.create({
+            const a= user.create({
                 firstName: 'John',
                 lastName: 'Hancock'
             });
+            console.log(a);
         });
         return View({ author: 'cc' }, 'index');
     }

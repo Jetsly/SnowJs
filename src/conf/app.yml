@@ -3,7 +3,7 @@ application:
 database:
     username:
     password:
-    database:
+    database: snowjs
     option:
         dialect: sqlite
-        storeage: snowjs.sqlite
+        storeage: E:\jsdirpGit\SnowJs\snowjs.sqlite
