@@ -12,9 +12,9 @@ export default function ViewResult(model, viewName) {
         try{
             let viewNameContents = options.engine.compileFile(viewPath,{});
             viewCache[viewName] = viewNameContents;
+             return viewNameContents(model);
         }catch(e){
             return `Not Found View ${viewName}<br />path ${viewPath}`;
-        }
-        return viewNameContents(model);
+        }       
     }
 }
