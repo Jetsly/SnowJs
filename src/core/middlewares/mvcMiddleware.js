@@ -1,7 +1,8 @@
-import { readdirSync } from 'fs';
 import { parse } from 'url';
-import path from 'path';
-import pug from 'pug';
+import { compileFile } from 'pug';
+import {
+    requireDir
+} from '../_util';
 import SnowMiddleware from './_snowMiddleware';
 
 import RequestMapping from '../decorators/requestMappingDecorator'
@@ -11,19 +12,14 @@ export default class MVCMiddleware extends SnowMiddleware {
     constructor(options) {
         super();
         this.options = Object.assign(options, {
-            engine: pug
+            engine: compileFile
         });
         this.actionMap = {};
-        var files = readdirSync(options.controllers);
-        files.forEach(file=> {
-            var ext = path.extname(file);
-            var base = path.basename(file, ext);
-
-            var controller = require(path.join(options.controllers, base));
+        requireDir(options.controllers).then(controller=>{
             if (controller.default.isController) {
                 this.inject(controller.default);
             }
-        });
+        })
     }
     inject(controller) {
         let aa = new controller();

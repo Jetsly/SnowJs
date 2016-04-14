@@ -6,12 +6,21 @@ RequestMapping,
 View
 } from '../core';
 
+import user from '../domain/user';
+
 @Controller()
 export default class Admin {
 
     @RequestMapping("/admin")
     admin(req, res) {
-       return View({ author: 'cc' },'index');
+        user.sync({ force: true }).then(function() {
+            // Table created
+            return user.create({
+                firstName: 'John',
+                lastName: 'Hancock'
+            });
+        });
+        return View({ author: 'cc' }, 'index');
     }
 
     @RequestMapping("/test")

@@ -10,11 +10,11 @@ export default function ViewResult(model, viewName) {
         }
         const viewPath=`${options.viewTpl}/${viewName}.jade`;
         try{
-            let viewNameContents = options.engine.compileFile(viewPath,{});
+            let viewNameContents = options.engine(viewPath,{});
             viewCache[viewName] = viewNameContents;
              return viewNameContents(model);
         }catch(e){
-            return `Not Found View ${viewName}<br />path ${viewPath}`;
+            return `Not Found ViewName ${viewName},with path ${viewPath}`;
         }       
     }
 }

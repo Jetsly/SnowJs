@@ -4,6 +4,7 @@ import { safeLoad } from 'js-yaml'
 import { readFileSync } from 'fs';
 import {resolve} from 'path';
 /**
+ * 
  * 核心的定义
  */
 export default class CoreSnow {
@@ -15,6 +16,7 @@ export default class CoreSnow {
                 port: 8080
             }
         }, _options);
+
     }
     static createServer() {
         return new CoreSnow();
