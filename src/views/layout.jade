@@ -1,0 +1,30 @@
+- var menus = [{name:'新建博文',url:'/admin/editor'},{name:'博文列表',url:'/admin/list'},{name:'用户管理',url:'/admin/team'}];
+- var settings=['全局设置','导航菜单','标签管理','插入代码','实验功能'];
+doctype html
+html(lang='zh')
+    head      
+        link(rel='stylesheet',href='/assets/css/pure-min.css')
+        link(rel='stylesheet',href='/assets/css/admin.css')
+        block title
+            title 点滴日记
+    body
+        div.pure-g#layout
+            div.pure-u#nav
+                a.nav-menu-button 菜单
+                div.nav-inner
+                    a.primary-button.pure-button(href='#') 首页
+                    div.pure-menu
+                        ul.pure-menu-list
+                            each menu in menus 
+                                li.pure-menu-item
+                                    a.pure-menu-link(href=menu.url)=menu.name
+                            li.pure-menu-heading 设置
+                            each setting in settings 
+                                li.pure-menu-item
+                                    a.pure-menu-link(href='#')=setting
+            block content                
+            div.pure-u-1#list
+            div.pure-u-1#main
+                   
+                
+            
