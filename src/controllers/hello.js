@@ -21,6 +21,6 @@ export default class Hello {
 
     @RequestMapping("/index")
     index() {
-        return View({ author: 'cc' },'index');
+        return View({ author: 'cc' },'inex');
     }
 }
