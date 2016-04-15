@@ -6,9 +6,10 @@ requireDirs
 export default class IocMiddleware extends SnowMiddleware {
     constructor(components=[]) {
         super();
-        this.container={};  
         this._components=components;
         this._componentKeys=[];     
+        this.container={};  
+      
     }    
     inject(){        
        requireDirs(this._components).forEach(component=>{         
