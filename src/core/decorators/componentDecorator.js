@@ -1,10 +1,11 @@
 /**
  * 被注入的组件
  */
-export default function Component(key,singleton=true) {
+export default function Component(componentKey,singleton=true) {
     return function(target, name, descriptor) {
-        descriptor.value.isComponent=true;
-        descriptor.value.isSingleton=singleton
+        target.componentKey=componentKey;
+        target.isComponent=true;
+        target.isSingleton=singleton;        
         return descriptor;
     };
 }

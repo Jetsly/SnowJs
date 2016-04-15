@@ -1,9 +1,10 @@
 /**
  * 自动注入
  */
-export default function Autowired(key) {
+export default function Autowired(componentKey) {
     return function(target, name, descriptor) {
-        descriptor.value.isAutowired=true;
+        descriptor.set.isAutowired=true;
+        descriptor.set.componentKey=componentKey;
         return descriptor;
     };
 }

@@ -1,27 +1,32 @@
 import { parse } from 'url';
 import { compileFile } from 'pug';
+import IocMiddleware from './_iocMiddleware';
 import {
 requireDir
 } from '../_util';
-import IocMiddleware from './_iocMiddleware';
-
 import RequestMapping from '../decorators/requestMappingDecorator'
 import RestController from '../decorators/restControllerDecorator'
 
 export default class MVCMiddleware extends IocMiddleware {
     constructor(options) {
-        super(options);
-        this.options = Object.assign(options, {
+        super(options.components);
+        this.options = Object.assign({
+            controllers:'',
+            viewTpl:'',
             engine: compileFile
-        });
-        this.actionMap = {};
-        requireDir(options.controllers).then(controller=> {
-            if (controller.default.isController) {
-                this.inject(controller.default);
-            }
-        })
+        },options);
+        this.actionMap = {};   
     }
-    inject(controller) {
+    inject(){
+       requireDir(this.options.controllers).then(controllers=> {   
+           controllers.forEach(controller=>{
+             if (controller.default.isController) {
+                this._injectController(controller.default);
+             }
+           });   
+       });
+    }
+    _injectController(controller) {
         let instance = new controller();
         const actions = Object.getOwnPropertyNames(controller.prototype);
         actions.forEach(action=> {
@@ -29,14 +34,15 @@ export default class MVCMiddleware extends IocMiddleware {
                 return;
             }
             let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
-            if(typeof method.set==='function'){
-                
+            if(method.set&&method.set.isAutowired){
+               let compnent=this.container[method.set.componentKey];
+              instance[action]=compnent.get();
             }
             else if (method.value&&method.value.isAction) {
                this.actionMap[method.value.actionMap] = {
                     ctrl:controller,
-                    action:method.value,
-                    exec:instance[method.value.name]
+                    action:method.value.name,
+                    exec:instance[method.value.name].bind(instance)
                };
             }
         });
