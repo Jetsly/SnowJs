@@ -9,7 +9,7 @@ import {resolve} from 'path';
  */
 export default class CoreSnow {
     constructor() {
-        this.middleware = null;
+        this._middleware = null;
         let _options = safeLoad(readFileSync(resolve(__dirname, '..', 'conf/app.yml')));
         this.options = Object.assign({
             application: {
@@ -22,7 +22,7 @@ export default class CoreSnow {
         return new CoreSnow();
     }
     _init() {
-        this.middleware.nextInvoke({
+        this._middleware.next={
             invoke: function(context) {
                 let {req, res} = context;
                 res.writeHead(404, {
@@ -31,18 +31,19 @@ export default class CoreSnow {
                 });
                 res.end();
             }
-        })
+        }
         server.on('request', (req, res) => {
-            this.middleware.invoke({
+            this._middleware.invoke({
                 req, res
             });
         })
     }
     use(middleware) {
-        if (this.middleware === null) {
-            this.middleware = middleware;
+        middleware.config=this.options;
+        if (this._middleware === null) {
+            this._middleware = middleware;
         } else {
-            this.middleware.nextInvoke(middleware);
+            this._middleware.next=middleware;
         }
     }
     listen(port) {

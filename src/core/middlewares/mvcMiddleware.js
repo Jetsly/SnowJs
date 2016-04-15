@@ -15,33 +15,28 @@ export default class MVCMiddleware extends IocMiddleware {
             viewTpl:'',
             engine: compileFile
         },options);
-        this.actionMap = {};   
+        this.actionMap = {};
+        this.inject();
     }
     inject(){
-       requireDir(this.options.controllers).then(controllers=> {   
-           controllers.forEach(controller=>{
-             if (controller.default.isController) {
-                this._injectController(controller.default);
-             }
-           });   
+       super.inject();
+       requireDir(this.options.controllers).forEach(controller=>{
+          if (controller.default&&controller.default.isController) {
+             this._injectController(controller.default);
+          }           
        });
     }
     _injectController(controller) {
         let instance = new controller();
-        const actions = Object.getOwnPropertyNames(controller.prototype);
-        actions.forEach(action=> {
-            if (action === 'constructor') {
-                return;
-            }
-            let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
+        this.forEachAction(controller.prototype,(action,method)=>{
             if(method.set&&method.set.isAutowired){
-               let compnent=this.container[method.set.componentKey];
-              instance[action]=compnent.get();
-            }
-            else if (method.value&&method.value.isAction) {
+                let compnent=this.container[method.set.componentKey];
+                instance[action]=compnent.get();
+            }   
+            if (method.value&&method.value.isAction) {
                this.actionMap[method.value.actionMap] = {
-                    ctrl:controller,
-                    action:method.value.name,
+                    // ctrl:controller,
+                    // action:method.value.name,
                     exec:instance[method.value.name].bind(instance)
                };
             }

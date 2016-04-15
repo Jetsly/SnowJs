@@ -9,10 +9,7 @@ View
 
 
 @Controller()
-export default class Admin {
-    constructor(){
-      this._user=null;
-    }
+export default class Admin {   
     @Autowired('user')
     set user(value){
        this._user=value;
@@ -20,7 +17,8 @@ export default class Admin {
 
     @RequestMapping("/admin")
     admin(req, res) {
-        let a=this._user.get();        
+        let a=this._user.get();     
+        console.log(a);   
         return View({ author: 'cc' }, 'index');
     }
 

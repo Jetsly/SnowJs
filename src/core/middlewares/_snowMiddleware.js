@@ -1,19 +1,23 @@
 
 export default class SnowMiddleware {
     constructor() {
-        this.next = null;
+        this._middleware = null;
+        this._config={};
     }
-    nextInvoke(middleware) {
-        if (this.next === null) {
-            this.next = middleware;
+    set config(value){
+        this._config=value
+    }
+    set next(middleware) {
+        if (this._middleware === null) {
+            this._middleware = middleware;
         } else {
-            this.next.nextInvoke(middleware);
+            this._middleware.next=middleware;
         }
     }
     invoke(context) {
         let {req, res} = context;
-        if (this.next !== null && !res.finished) {
-            this.next.invoke(context);
+        if (this._middleware !== null && !res.finished) {
+            this._middleware.invoke(context);
         }
     }
 }

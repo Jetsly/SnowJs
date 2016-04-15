@@ -8,5 +8,4 @@
 * [pug](https://github.com/pugjs/pug)
 * [js-yaml](https://github.com/nodeca/js-yaml)
 * [sequelize](https://github.com/sequelize/sequelize)
-
 * [pure](http://purecss.io/)
