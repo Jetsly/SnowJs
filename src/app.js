@@ -2,13 +2,8 @@
 import {
 default as CoreSnow,
 StaticMiddleware,
-MVCMiddleware,
-APIMiddleware
+MVCMiddleware
 } from './core';
-
-// const apiWare = new APIMiddleware({
-
-// });
 
 const app = CoreSnow.createServer();
 
@@ -17,7 +12,8 @@ app.use(new StaticMiddleware({
 }));
 
 app.use(new MVCMiddleware({
+    components:[`${__dirname}/domain`],
     controllers: `${__dirname}/controllers`,
-    viewTpl: `${__dirname}/views`
+    viewTpl: `${__dirname}/views`,    
 }))
 app.start();

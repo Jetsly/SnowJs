@@ -6,4 +6,4 @@ database:
     database: snowjs
     option:
         dialect: sqlite
-        storeage: E:\jsdirpGit\SnowJs\snowjs.sqlite
+        storeage: E:\jsdirpGit\SnowJs\snowjs.sqlite 

@@ -2,25 +2,22 @@
 import {
 Controller,
 RequestMapping,
+Autowired,
 
 View
 } from '../core';
 
-import user from '../domain/user';
 
 @Controller()
 export default class Admin {
+    
+    @Autowired('user')
+    set user(value){
+       this.user=value;
+    }
 
     @RequestMapping("/admin")
     admin(req, res) {
-        user.sync({ force: true }).then(function() {
-            // Table created
-            const a= user.create({
-                firstName: 'John',
-                lastName: 'Hancock'
-            });
-            console.log(a);
-        });
         return View({ author: 'cc' }, 'index');
     }
 

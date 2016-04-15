@@ -1,8 +1,11 @@
 import sequelize from './_config';
 import Sequelize from 'sequelize';
+import {
+    Component
+} from '../core';
 
-
-class User {
+@Component('user')
+export default class User {
     constructor() {
         return sequelize.define('user', {
             firstName: {
@@ -17,18 +20,3 @@ class User {
             });
     }
 }
-const user=new User();
-export default user;
-// var sequelize = new Sequelize('database', 'username', 'password', {
-//     host: 'localhost',
-//     dialect: 'mysql' | 'mariadb' | 'sqlite' | 'postgres' | 'mssql',
-
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         idle: 10000
-//     },
-
-//     // SQLite only
-//     storage: 'path/to/database.sqlite'
-// });

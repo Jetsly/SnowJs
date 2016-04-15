@@ -3,14 +3,14 @@ import { compileFile } from 'pug';
 import {
 requireDir
 } from '../_util';
-import SnowMiddleware from './_snowMiddleware';
+import IocMiddleware from './_iocMiddleware';
 
 import RequestMapping from '../decorators/requestMappingDecorator'
 import RestController from '../decorators/restControllerDecorator'
 
-export default class MVCMiddleware extends SnowMiddleware {
+export default class MVCMiddleware extends IocMiddleware {
     constructor(options) {
-        super();
+        super(options);
         this.options = Object.assign(options, {
             engine: compileFile
         });
@@ -22,15 +22,22 @@ export default class MVCMiddleware extends SnowMiddleware {
         })
     }
     inject(controller) {
-        let aa = new controller();
+        let instance = new controller();
         const actions = Object.getOwnPropertyNames(controller.prototype);
         actions.forEach(action=> {
             if (action === 'constructor') {
                 return;
             }
             let method = Object.getOwnPropertyDescriptor(controller.prototype, action);
-            if (method.value.isAction) {
-                this.actionMap[method.value.actionMap] = method.value;
+            if(typeof method.set==='function'){
+                
+            }
+            else if (method.value&&method.value.isAction) {
+               this.actionMap[method.value.actionMap] = {
+                    ctrl:controller,
+                    action:method.value,
+                    exec:instance[method.value.name]
+               };
             }
         });
     }
@@ -38,7 +45,7 @@ export default class MVCMiddleware extends SnowMiddleware {
         let {req, res} = context;
         const reqUrl = parse(req.url);
         if (this.actionMap.hasOwnProperty(reqUrl.pathname)) {
-            return this.actionResult(this.actionMap[reqUrl.pathname](req, res), res);
+            return this.actionResult(this.actionMap[reqUrl.pathname].exec(req, res), res);
         }
         super.invoke(context);
     }

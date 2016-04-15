@@ -58,20 +58,22 @@ export default class CoreSnow {
 
 import RequestMapping from './decorators/requestMappingDecorator'
 import Controller from './decorators/restControllerDecorator'
+import Autowired from './decorators/autowiredDecorator'
+import Component from './decorators/componentDecorator'
 
 import StaticMiddleware from './middlewares/staticMiddleware'
 import MVCMiddleware from './middlewares/mvcMiddleware'
-import APIMiddleware from './middlewares/apiMiddleware'
 
 import View from './actionResult/ViewResult'
 
 export {
 Controller,
 RequestMapping,
+Component,
+Autowired,
 
 StaticMiddleware,
 MVCMiddleware,
-APIMiddleware,
 
 View
 }
