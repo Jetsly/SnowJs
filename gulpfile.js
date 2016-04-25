@@ -2,7 +2,8 @@ const gulp = require('gulp');
 const sourcemaps = require('gulp-sourcemaps');
 const clean = require('gulp-clean');
 const babel = require("gulp-babel");
-
+const sass =require("gulp-sass");
+const types=sass.compiler.types;
 gulp.task('clean',()=>{
    return gulp.src('public', {read: false})
     .pipe(clean());
@@ -21,6 +22,24 @@ gulp.task('conf',['clean'],()=>{
 gulp.task('views',['clean'],()=>{
    return gulp.src('src/views/**/*.*')
     .pipe(gulp.dest("public/views"));
+});
+
+gulp.task('sass',['clean'],()=>{
+   return gulp.src('src/styles/main.scss')
+    .pipe(sass({
+        outputStyle: 'compressed',
+        functions:{
+            'lang($lang:ja)':(lang)=>{            
+              return types.Color(0xff000000);  
+            }
+        },
+        sourceMap: true
+    }).on('error', sass.logError))
+    .pipe(gulp.dest("public/assets/css"));
+}); 
+
+gulp.task('sass:watch', function () {
+  gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
 gulp.task("build",['views', 'conf', 'static'],() => {
