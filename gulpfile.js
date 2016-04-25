@@ -4,6 +4,7 @@ const clean = require('gulp-clean');
 const babel = require("gulp-babel");
 const sass =require("gulp-sass");
 const types=sass.compiler.types;
+
 gulp.task('clean',()=>{
    return gulp.src('public', {read: false})
     .pipe(clean());
@@ -19,13 +20,14 @@ gulp.task('conf',['clean'],()=>{
     .pipe(gulp.dest("public/conf"));
 });
 
-gulp.task('views',['clean'],()=>{
+gulp.task('views',['clean'],()=>{   
    return gulp.src('src/views/**/*.*')
     .pipe(gulp.dest("public/views"));
 });
 
 gulp.task('sass',['clean'],()=>{
-   return gulp.src('src/styles/main.scss')
+   return gulp.src(['src/styles/admin.scss','src/styles/index.scss'])
+    .pipe(sourcemaps.init())
     .pipe(sass({
         outputStyle: 'compressed',
         functions:{
@@ -35,6 +37,7 @@ gulp.task('sass',['clean'],()=>{
         },
         sourceMap: true
     }).on('error', sass.logError))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest("public/assets/css"));
 }); 
 
@@ -42,7 +45,7 @@ gulp.task('sass:watch', function () {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
-gulp.task("build",['views', 'conf', 'static'],() => {
+gulp.task("build",['views', 'conf', 'static','sass:watch'],() => {
     return gulp.src("src/**/*.js")
         .pipe(sourcemaps.init())
         .pipe(babel())
