@@ -1,9 +1,2 @@
 application:
     port: 8090
-database:
-    username:
-    password:
-    database: snowjs
-    option:
-        dialect: sqlite
-        storeage: E:\jsdirpGit\SnowJs\snowjs.sqlite 

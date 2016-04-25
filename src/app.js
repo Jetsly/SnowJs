@@ -12,7 +12,7 @@ app.use(new StaticMiddleware({
 }));
 
 app.use(new MVCMiddleware({
-    components:[`${__dirname}/domain`],
+    components:[`${__dirname}/domain`,`${__dirname}/service`],
     controllers: `${__dirname}/controllers`,
     viewTpl: `${__dirname}/views`,    
 }))

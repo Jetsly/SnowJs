@@ -60,16 +60,13 @@ export default class MVCMiddleware extends IocMiddleware {
         else if (typeof result === 'function') {
             contentType = 'text/html';
             body = result(this.options);
-        }
-        res.setHeader('Content-Type', contentType);
+        }      
         if (body instanceof Promise) {
             body.done((msg) => {
-                res.writeHead(200, {
-                    'Content-Length': msg.length,
-                });
-                res.end(msg);
+                this.actionResult(msg,res);
             });
         } else {
+            res.setHeader('Content-Type', contentType);
             res.writeHead(200, {
                 'Content-Length': body.length,
             });
